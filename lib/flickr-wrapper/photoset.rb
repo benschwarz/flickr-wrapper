@@ -9,7 +9,7 @@ class Flickr::PhotoSet < Flickr::Base
   def self.list(caller)
     flickr = Flickr::Query.new caller.user_id
     (flickr.execute('flickr.photosets.getList')/:photosets).map do |set|
-      self.new(set[:id], set[:title], (set/:description).inner_html)
+      self.new(set[:id], set[:title], (set/:description).inner_html, set[:photos])
     end
   end
   
