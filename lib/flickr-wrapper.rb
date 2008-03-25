@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'flickr-rest'
 require 'time'
+require 'validatable'
 
 # Namespace junkie
 module Flickr; end

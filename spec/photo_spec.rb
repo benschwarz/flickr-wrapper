@@ -13,28 +13,28 @@ describe Flickr::Photo, "class" do
   
   it "should have tags" do
     Flickr::Photo.public_instance_methods.should include "tags"
-    tags = Flickr::Photo.find("252091410").tags
+    tags = Flickr::Photo.find(@flickr, "252091410").tags
     tags.should be_an_instance_of(Array)
-    tags.first.should be_an_instance_of(Tag)
+    tags.first.should be_an_instance_of(Flickr::Tag)
   end
   
   it "should have a taken time" do
-    Flickr::Photo = Flickr::Photo.find("252091410")
-    Flickr::Photo.taken.should be_an_instance_of(Time)
+    @photo = Flickr::Photo.find(@flickr, "252091410")
+    @photo.taken.should be_an_instance_of(Time)
   end
   
   it "should have machine_tags" do
     Flickr::Photo.public_instance_methods.should include "machine_tags"
-    machine_tags = Flickr::Photo.find("252091410").machine_tags
+    machine_tags = Flickr::Photo.find(@flickr, "252091410").machine_tags
     machine_tags.should be_an_instance_of(Array)
-    machine_tags.first.should be_an_instance_of(MachineTag)
+    machine_tags.first.should be_an_instance_of(Flickr::MachineTag)
     machine_tags.first.namespace.should eql "flickrfolio"
     machine_tags.first.predicate.should eql "test"
     machine_tags.first.value.should eql "spec"
   end
   
   it "should have an array of hashes that contain Size class instances" do
-    sizes = Flickr::Photo.search("spec").first.sizes
+    sizes = Flickr::Photo.search(@flickr, "spec").first.sizes
     sizes.should be_an_instance_of(Hash)
     sizes[:thumbnail].should be_an_instance_of(Flickr::Photo::Size)
   end

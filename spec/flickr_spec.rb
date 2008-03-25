@@ -33,5 +33,7 @@ describe Flickr::Base, "convenience methods" do
   it "should list machine_tags" do
     @flickr.machine_tags.should be_an_instance_of Array
     @flickr.machine_tags.first.should be_an_instance_of Flickr::MachineTag
+    
+    puts "******** " + @flickr.machine_tags.inspect
   end
 end
