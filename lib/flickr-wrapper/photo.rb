@@ -1,18 +1,14 @@
 class Flickr::Photo < Flickr::Base
   class Size < Struct.new :width, :height, :source, :url; end
   
-  attr_accessor :id, :title, :description, :tags, :machine_tags, :taken, :posted
+  attr_accessor :id, :title, :description, :tags, :machine_tags, :taken, :posted, :caller
   
   def initialize(id, title, description)
     @id, @title, @description = id, title, description
   end
 
   def self.list(caller)
-    flickr = Flickr::Query.new caller.user_id
-    photos = (flickr.execute("flickr.photos.search")/:photo)
-    photos.empty? ? [] : photos.map do |photo|
-      self.find(caller, photo[:id])
-    end
+    search(caller)
   end
   
   # Find will grab all sizes of images, process the tags and standard attributes of a photo
@@ -31,11 +27,27 @@ class Flickr::Photo < Flickr::Base
     return photo
   end
   
+  # Find a collection of photos by text
+  # Search options should be hashes with string values or arrays for multiple values
+  def self.search(caller, search_options={})
+    @caller = caller
+    parse(Flickr::Query.new(@caller.user_id).execute('flickr.photos.search', search_options))
+  end
+  
   def sizes
     hash = {}
-    (Flickr::Query.execute('flickr.photos.getSizes', :photo_id => id)/:size).each do |size|
-      hash[size['label'].downcase.to_sym] = Flickr::Size.new(*%w(width height source url).map{|a| size[a]})
+    (Flickr::Query.new(user_id).execute('flickr.photos.getSizes', :photo_id => id)/:size).each do |size|
+      hash[size['label'].downcase.to_sym] = Size.new(*%w(width height source url).map{|a| size[a]})
     end
     hash
+  end
+  
+  private
+  # Parse applies Hpricot to the photos and maps them to a Photo class instance
+  def self.parse(collection)
+    photos = (collection/:photo)
+    photos.empty? ? [] : photos.map do |photo|
+      self.find(@caller, photo[:id])
+    end
   end
 end
