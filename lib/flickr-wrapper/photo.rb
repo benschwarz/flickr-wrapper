@@ -7,13 +7,13 @@ class Flickr::Photo < Flickr::Base
     @id, @title, @description = id, title, description
   end
 
-  def self.list(caller)
-    search(caller)
+  def self.list(user_id)
+    search(user_id)
   end
   
   # Find will grab all sizes of images, process the tags and standard attributes of a photo
-  def self.find(caller, id)
-    photo_call = Flickr::Query.new(caller.user_id).execute('flickr.photos.getInfo', :photo_id => id)
+  def self.find(user_id, id)
+    photo_call = Flickr::Query.new(user_id).execute('flickr.photos.getInfo', :photo_id => id)
       
     # Set basic attributes
     photo = self.new(id, *%w(title description).map {|a| (photo_call/a).inner_text })
@@ -29,9 +29,8 @@ class Flickr::Photo < Flickr::Base
   
   # Find a collection of photos by text
   # Search options should be hashes with string values or arrays for multiple values
-  def self.search(caller, search_options={})
-    @caller = caller
-    parse(Flickr::Query.new(@caller.user_id).execute('flickr.photos.search', search_options))
+  def self.search(user_id, search_options={})
+    parse(user_id, Flickr::Query.new(user_id).execute('flickr.photos.search', search_options))
   end
   
   def sizes
@@ -44,10 +43,10 @@ class Flickr::Photo < Flickr::Base
   
   private
   # Parse applies Hpricot to the photos and maps them to a Photo class instance
-  def self.parse(collection)
+  def self.parse(user_id, collection)
     photos = (collection/:photo)
     photos.empty? ? [] : photos.map do |photo|
-      self.find(@caller, photo[:id])
+      self.find(user_id, photo[:id])
     end
   end
 end

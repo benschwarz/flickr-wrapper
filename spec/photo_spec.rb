@@ -8,31 +8,31 @@ describe Flickr::Photo, "class" do
   end
   
   it "should list all photos" do
-    Flickr::Photo.list(@flickr).should be_an_instance_of(Array)
-    Flickr::Photo.list(@flickr).first.should be_an_instance_of(Flickr::Photo)
+    Flickr::Photo.list(@flickr.user_id).should be_an_instance_of(Array)
+    Flickr::Photo.list(@flickr.user_id).first.should be_an_instance_of(Flickr::Photo)
   end
   
   it "should have tags" do
     Flickr::Photo.public_instance_methods.should include "tags"
-    tags = Flickr::Photo.find(@flickr, "252091410").tags
+    tags = Flickr::Photo.find(@flickr.user_id, "252091410").tags
     tags.should be_an_instance_of(Array)
     tags.first.should be_an_instance_of(Flickr::Tag)
   end
   
   it "should have a taken time" do
-    @photo = Flickr::Photo.find(@flickr, "252091410")
+    @photo = Flickr::Photo.find(@flickr.user_id, "252091410")
     @photo.taken.should be_an_instance_of(Time)
   end
   
   it "should have a posted date" do
-    @photo = Flickr::Photo.find(@flickr, "252091410")
+    @photo = Flickr::Photo.find(@flickr.user_id, "252091410")
     @photo.posted.should be_an_instance_of(Time)
   end
   
   
   it "should have machine_tags" do
     Flickr::Photo.public_instance_methods.should include "machine_tags"
-    machine_tags = Flickr::Photo.find(@flickr, "252091410").machine_tags
+    machine_tags = Flickr::Photo.find(@flickr.user_id, "252091410").machine_tags
     machine_tags.should be_an_instance_of(Array)
     machine_tags.first.should be_an_instance_of(Flickr::MachineTag)
     machine_tags.first.namespace.should eql "flickrfolio"
@@ -41,7 +41,7 @@ describe Flickr::Photo, "class" do
   end
   
   it "should have an array of hashes that contain Size class instances" do
-    sizes = Flickr::Photo.search(@flickr, :text => "spec").first.sizes
+    sizes = Flickr::Photo.search(@flickr.user_id, :text => "spec").first.sizes
     sizes.should be_an_instance_of(Hash)
     sizes[:thumbnail].should be_an_instance_of(Flickr::Photo::Size)
   end
@@ -54,24 +54,24 @@ describe "Searching" do
   end
   
   it "should be empty when no search is met" do 
-    search = Flickr::Photo.search(@flickr, :text => "null")
+    search = Flickr::Photo.search(@flickr.user_id, :text => "null")
     search.should be_an_instance_of(Array)
     search.should be_empty
   end
   
   it "should return an array of its self" do
-    search = Flickr::Photo.search(@flickr, :text => "spec")
+    search = Flickr::Photo.search(@flickr.user_id, :text => "spec")
     search.should be_an_instance_of(Array)
     search.first.should be_an_instance_of(Flickr::Photo)
   end
   
   it "should find a Flickr::Photo by id" do
-    photo = Flickr::Photo.find(@flickr, "252091410")
+    photo = Flickr::Photo.find(@flickr.user_id, "252091410")
     photo.should be_an_instance_of(Flickr::Photo)
   end
   
   it "should be able to find Flickr::Photos by tags only" do
-    search = Flickr::Photo.search(@flickr, :tags => "street")
+    search = Flickr::Photo.search(@flickr.user_id, :tags => "street")
     search.should be_an_instance_of(Array)
     search.first.should be_an_instance_of(Flickr::Photo)
   end

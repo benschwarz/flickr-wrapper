@@ -21,7 +21,7 @@ describe Flickr::MachineTag, "class" do
   end
   
   it "should list machine tags (in general)" do
-    m_tags = Flickr::MachineTag.list(@flickr)
+    m_tags = Flickr::MachineTag.list(@flickr.user_id)
     m_tags.should be_an_instance_of(Array)
     m_tags.first.should be_an_instance_of(Flickr::MachineTag)
   end
