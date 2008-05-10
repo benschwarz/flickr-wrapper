@@ -8,6 +8,6 @@ describe Flickr::Tag, "class" do
   it "should list all tags" do
     tags = Flickr::Tag.list(@flickr)
     tags.should(be_an_instance_of(Array))
-    tags.should(be_an_instance_of(Flickr::Tag))
+    tags.first.should(be_an_instance_of(Flickr::Tag))
   end
 end
