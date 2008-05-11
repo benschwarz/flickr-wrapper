@@ -3,3 +3,5 @@ Not a full API, no groups, no community, who needs friends anyway?
 
 If you want a full API, use the `flickr` gem hosted on Rubyforge, its 
 old but it was nailed with its 1.0 release.
+
+Check the specs for usage
