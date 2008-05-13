@@ -1,0 +1,2 @@
+Classes should expose their instance methods that access fundamental aspects
+	Eg: photoset.photos, photo.sizes
