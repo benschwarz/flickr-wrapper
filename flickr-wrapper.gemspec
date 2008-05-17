@@ -12,4 +12,5 @@ Gem::Specification.new do |s|
   
   # Deps
   s.add_dependency("flickr-rest", ">= 0.0.1")
+  s.add_dependency("validatable", ">= 1.6.7")
 end
