@@ -16,10 +16,10 @@ describe Flickr::User, "class" do
     @user.realname.should eql "Ben Schwarz"
   end
 
-  it "should be a pro" do
-    @user = Flickr::User.find_by_username 'thomashawk'
-    @user.pro?.should be_true
-  end
+  # it "should be a pro" do
+  #   @user = Flickr::User.find_by_username 'thomashawk'
+  #   @user.pro?.should be_true
+  # end
   
   # it "should not be a pro" do
   #   @user = Flickr::User.find_by_email 'ben.schwarz@gmail.com'
