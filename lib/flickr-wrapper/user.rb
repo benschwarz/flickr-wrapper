@@ -14,6 +14,11 @@ class Flickr::User < Flickr::Base
     return Flickr::User.new(result.at(:username).inner_text, result.at(:user)['nsid'])
   end
   
+  def self.find_by_username username
+    result = Flickr::Query.new('').execute('flickr.people.findByUsername', :username => username)
+    return Flickr::User.new(result.at(:username).inner_text, result.at(:user)['nsid'])
+  end
+  
   #
   # ==== Instance methods
   #
