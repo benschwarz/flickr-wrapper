@@ -32,6 +32,11 @@ class Flickr::User < Flickr::Base
     get_info.at(:location).inner_text || "Unknown"
   end
   
+  # has the user shelled out for flickr-pro account?
+  def pro?
+    (get_info.at(:person)["ispro"] == "1") ? true : false 
+  end
+  
   #
   # ==== Private methods
   #
