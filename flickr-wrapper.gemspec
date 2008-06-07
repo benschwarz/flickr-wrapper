@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = "flickr-wrapper"
-  s.version = "0.1.2"
-  s.date = "2008-05-10"
+  s.version = "0.1.3"
+  s.date = "2008-06-07"
   s.summary = "A grassroots wrapper for flickr"
   s.email = "ben@germanforblack.com"
   s.homepage = "http://github.com/benschwarz/flickr-wrapper"

@@ -8,9 +8,7 @@ require 'validatable'
 require File.join(File.dirname(__FILE__), 'vendor', 'parallel', 'parallel.rb')
 
 # Namespace junkie
-module Flickr
-  MAX_THREADS = 5
-end
+module Flickr; end
 
 # Classes
 %w(base photoset photo tag machine_tag user).each {|r| require File.join(File.dirname(__FILE__), 'flickr-wrapper', r)}
