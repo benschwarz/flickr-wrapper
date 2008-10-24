@@ -9,9 +9,6 @@ require 'flickr-rest'
 require 'time'
 require 'validatable'
 
-# Concurrency
-require File.join(File.dirname(__FILE__), 'vendor', 'parallel', 'parallel.rb')
-
 # Namespace junkie
 module Flickr; end
 

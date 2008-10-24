@@ -27,7 +27,7 @@ class Flickr::User < Flickr::Base
     get_info.at(:realname).inner_text
   end
   
-  # The psyical location string as entered in flickr
+  # The location string as entered in flickr
   def location
     get_info.at(:location).inner_text || "Unknown"
   end
@@ -35,6 +35,15 @@ class Flickr::User < Flickr::Base
   # has the user shelled out for flickr-pro account?
   def pro?
     (get_info.at(:person)["ispro"] == "1") ? true : false 
+  end
+  
+  # Do they have a buddy icon or not?
+  def buddy_icon?
+    (icon_server > 0) ? true : false 
+  end
+  
+  def buddy_icon_url
+    buddy_icon? ? "http://farm#{icon_farm}.static.flickr.com/#{icon_server}/buddyicons/#{nsid}.jpg" : "http://www.flickr.com/images/buddyicon.jpg"
   end
   
   #
@@ -46,5 +55,13 @@ class Flickr::User < Flickr::Base
     def get_info
       @info = Flickr::Query.new(@nsid).execute('flickr.people.getInfo', :user_id => nsid) unless @info
       @info
+    end
+    
+    def icon_server
+      get_info.at(:person)["iconserver"].to_i
+    end
+    
+    def icon_farm
+      get_info.at(:person)["iconfarm"].to_i
     end
 end
