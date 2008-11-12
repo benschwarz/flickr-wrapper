@@ -35,7 +35,7 @@ class Flickr::Photo < Flickr::Base
   
   def sizes
     hash = {}
-    (Flickr::Query.new(user_id).execute('flickr.photos.getSizes', :photo_id => id)/:size).each do |size|
+    (Flickr::Query.new(user_id).execute('flickr.photos.getSizes', :photo_id => id)/:size).parallel_each(Flickr::MAX_THREADS) do |size|
       hash[size['label'].downcase.to_sym] = Size.new(*%w(width height source url).map{|a| size[a]})
     end
     hash

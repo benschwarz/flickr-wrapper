@@ -26,7 +26,7 @@ class Flickr::PhotoSet < Flickr::Base
   # > photosets.getPhotos (1 call)
   # > Photo.find ID (n calls)
   def photos
-    return (Flickr::Query.new(user_id).execute('flickr.photosets.getPhotos', :photoset_id => id)/:photo).map do |photo|
+    return (Flickr::Query.new(user_id).execute('flickr.photosets.getPhotos', :photoset_id => id)/:photo).parallel_map(Flickr::MAX_THREADS) do |photo|
       Flickr::Photo.find user_id, photo[:id]
     end
   end
