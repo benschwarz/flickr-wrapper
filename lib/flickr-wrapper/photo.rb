@@ -38,14 +38,14 @@ class Flickr::Photo < Flickr::Base
     (Flickr::Query.new(user_id).execute('flickr.photos.getSizes', :photo_id => id)/:size).parallel_each(Flickr::MAX_THREADS) do |size|
       hash[size['label'].downcase.to_sym] = Size.new(*%w(width height source url).map{|a| size[a]})
     end
-    hash
+    return hash
   end
   
   private
   # Parse applies Hpricot to the photos and maps them to a Photo class instance
   def self.parse(user_id, collection)
     photos = (collection/:photo)
-    photos.empty? ? [] : photos.map do |photo|
+    photos.empty? ? [] : photos.parallel_map(Flickr::MAX_THREADS) do |photo|
       self.find(user_id, photo[:id])
     end
   end
