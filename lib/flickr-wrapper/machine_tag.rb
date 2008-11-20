@@ -11,7 +11,7 @@ class Flickr::MachineTag < Flickr::Base #:nodoc
   end
   
   def self.list(user_id)
-    (Flickr::Query.new(user_id).execute('flickr.tags.getListUser')/:tag).map {|tag| self.from_s tag.inner_text.to_s }.compact
+    (Flickr::Query.new(user_id).execute('flickr.tags.getListUser')/:tag).parallel_map(Flickr::MAX_THREADS) {|tag| self.from_s tag.inner_text.to_s }.compact
   end
   
   def self.from_s(string)
